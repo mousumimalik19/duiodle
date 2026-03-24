@@ -1,0 +1,39 @@
+{#
+  Duiodle Page Template
+  
+  This Jinja2 template generates a complete React + Tailwind + Framer Motion page
+  from the rendered JSX content.
+  
+  Variables:
+    - content: The rendered JSX tree content
+    - component_name: Name of the component (default: "Page")
+    - imports: List of import statements
+    - has_motion: Whether motion animations are used
+    - has_images: Whether images are present
+    - has_links: Whether links are present
+#}
+{# Import statements #}
+import React from "react";
+{% if has_motion %}
+import { motion } from "framer-motion";
+{% endif %}
+
+{# Type definitions for TypeScript #}
+{% if has_images %}
+interface ImageProps {
+  src: string;
+  alt: string;
+  className?: string;
+}
+{% endif %}
+
+{# Main page component #}
+export default function {{ component_name | default("Page") }}() {
+  return (
+    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4 sm:p-8">
+      <div className="w-full max-w-6xl mx-auto">
+        {{ content | indent(8) }}
+      </div>
+    </main>
+  );
+}

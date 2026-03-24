@@ -1,0 +1,32 @@
+{#
+  Duiodle Component Template
+  
+  This template generates a standalone React component that can be
+  imported and reused in other parts of the application.
+  
+  Variables:
+    - content: The rendered JSX tree content
+    - component_name: Name of the component
+    - has_motion: Whether motion animations are used
+    - props: List of component props with types
+#}
+import React from "react";
+{% if has_motion %}
+import { motion } from "framer-motion";
+{% endif %}
+
+{% if props %}
+interface {{ component_name }}Props {
+{% for prop in props %}
+  {{ prop.name }}{% if not prop.required %}?{% endif %}: {{ prop.type }};
+{% endfor %}
+}
+
+export default function {{ component_name }}({ {% for prop in props %}{{ prop.name }}{% if prop.default %} = {{ prop.default }}{% endif %}{% if not loop.last %}, {% endif %}{% endfor %} }: {{ component_name }}Props) {
+{% else %}
+export default function {{ component_name }}() {
+{% endif %}
+  return (
+    {{ content | indent(4) }}
+  );
+}

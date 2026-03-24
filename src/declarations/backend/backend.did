@@ -1,0 +1,7 @@
+service : {
+  getInfo: () -> (record {
+                    appName: text;
+                    tagline: text;
+                  }) query;
+  process_doodle: (image_data: vec nat8) -> (text);
+}

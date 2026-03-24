@@ -1,0 +1,100 @@
+{#
+  Duiodle Layout Template
+  
+  This template generates a layout wrapper component for Next.js
+  or React Router applications.
+  
+  Variables:
+    - content: The rendered JSX content
+    - component_name: Name of the layout component
+    - has_motion: Whether motion animations are used
+    - include_header: Whether to include a header slot
+    - include_footer: Whether to include a footer slot
+    - include_sidebar: Whether to include a sidebar slot
+#}
+import React from "react";
+{% if has_motion %}
+import { motion, AnimatePresence } from "framer-motion";
+{% endif %}
+
+interface {{ component_name | default("Layout") }}Props {
+  children: React.ReactNode;
+{% if include_header %}
+  header?: React.ReactNode;
+{% endif %}
+{% if include_footer %}
+  footer?: React.ReactNode;
+{% endif %}
+{% if include_sidebar %}
+  sidebar?: React.ReactNode;
+{% endif %}
+}
+
+{% if has_motion %}
+const pageTransition = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -20 },
+  transition: { duration: 0.3, ease: "easeInOut" }
+};
+{% endif %}
+
+export default function {{ component_name | default("Layout") }}({
+  children,
+{% if include_header %}
+  header,
+{% endif %}
+{% if include_footer %}
+  footer,
+{% endif %}
+{% if include_sidebar %}
+  sidebar,
+{% endif %}
+}: {{ component_name | default("Layout") }}Props) {
+  return (
+    <div className="min-h-screen flex flex-col bg-white">
+{% if include_header %}
+      {header && (
+        <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-sm">
+          {header}
+        </header>
+      )}
+{% endif %}
+
+      <div className="flex flex-1">
+{% if include_sidebar %}
+        {sidebar && (
+          <aside className="hidden md:flex w-64 flex-col border-r border-gray-200 bg-gray-50">
+            {sidebar}
+          </aside>
+        )}
+{% endif %}
+
+{% if has_motion %}
+        <AnimatePresence mode="wait">
+          <motion.main
+            className="flex-1 p-4 sm:p-6 lg:p-8"
+            {...pageTransition}
+          >
+            {{ content | indent(12) }}
+            {children}
+          </motion.main>
+        </AnimatePresence>
+{% else %}
+        <main className="flex-1 p-4 sm:p-6 lg:p-8">
+          {{ content | indent(10) }}
+          {children}
+        </main>
+{% endif %}
+      </div>
+
+{% if include_footer %}
+      {footer && (
+        <footer className="border-t border-gray-200 bg-gray-50">
+          {footer}
+        </footer>
+      )}
+{% endif %}
+    </div>
+  );
+}

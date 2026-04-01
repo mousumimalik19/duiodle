@@ -1,0 +1,1521 @@
+/* ──────────────────────────────────────────────
+   THEME VARIABLES
+────────────────────────────────────────────── */
+:root {
+  --accent: #f0c040;
+  --bg: #ffffff;
+  --bg-surface: #f9f9f9;
+  --fg: #111827;
+  --fg-muted: #6b7280;
+  --border: #e5e7eb;
+  --card-bg: #ffffff;
+}
+
+[data-theme="dark"] {
+  --bg: #0e0e0e;
+  --bg-surface: #141414;
+  --fg: #ffffff;
+  --fg-muted: #ffffff;
+  --border: #2a2a2a;
+  --card-bg: #1e1e1e;
+}
+
+/* ──────────────────────────────────────────────
+   THEME TOGGLE BUTTON
+────────────────────────────────────────────── */
+.theme-toggle-wrap {
+  position: fixed;
+  bottom: 28px;
+  right: 20px;
+  z-index: 9999;
+  border-radius: 9999px;
+  overflow: visible !important;
+  /* Use drop-shadow on the wrap so it bleeds outside the clip area */
+  filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.45));
+}
+
+.theme-toggle {
+  /* Generous circle — 64×64px so it's impossible to miss */
+  width: 64px;
+  height: 64px;
+  border-radius: 9999px;
+  /* Vivid yellow fill in light mode */
+  background: #fbff29;
+  border: 3px solid #b89500;
+  color: #111;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Scale up the icon SVG rendered inside */
+  font-size: 1.5rem;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  /* Outer glow ring reinforces the yellow */
+  box-shadow: 0 0 0 4px rgba(251, 255, 41, 0.45), 0 8px 28px rgba(0, 0, 0, 0.28);
+}
+
+/* Make the inner SVG larger */
+.theme-toggle svg {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+/* Dark theme: bright white pill so it pops against the dark canvas */
+[data-theme="dark"] .theme-toggle {
+  background: #f5f5f5;
+  border-color: #cccccc;
+  color: #111;
+  box-shadow: 0 0 0 4px rgba(245, 245, 245, 0.2), 0 8px 28px rgba(0, 0, 0, 0.55);
+}
+
+.theme-toggle:hover {
+  background: #f5ff00;
+  border-color: #9a7800;
+  transform: translateY(-3px) scale(1.06);
+}
+
+[data-theme="dark"] .theme-toggle:hover {
+  background: #ffffff;
+  border-color: #aaaaaa;
+  transform: translateY(-3px) scale(1.06);
+}
+
+.theme-toggle:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* ──────────────────────────────────────────────
+   APP SHELL
+────────────────────────────────────────────── */
+.app {
+  width: 100%;
+  overflow-x: hidden;
+  background-color: var(--bg);
+  transition: background-color 0.25s ease;
+}
+
+/* ──────────────────────────────────────────────
+   NAV SPOTLIGHT WRAP
+────────────────────────────────────────────── */
+.nav-spotlight-wrap {
+  /* Allow CardNav's fixed positioning to work */
+  overflow: visible !important;
+}
+
+/* ──────────────────────────────────────────────
+   HERO
+────────────────────────────────────────────── */
+.hero-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: var(--bg);
+  transition: background-color 0.25s ease;
+}
+
+.hero-liquid-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-cursor-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 72px 2rem 64px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+/* ── Hero text: pinned black in light theme for legibility over LiquidEther ── */
+.hero-title {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: clamp(5rem, 14vw, 10rem);
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: #000000;
+  margin: 0 0 2rem;
+  user-select: none;
+  transition: color 0.25s ease;
+}
+
+[data-theme="dark"] .hero-title {
+  color: #ffffff;
+}
+
+.hero-subtitle {
+  font-family: "Karla", sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: #111111;
+  max-width: 440px;
+  margin: 0 auto 2.5rem;
+  transition: color 0.25s ease;
+}
+
+[data-theme="dark"] .hero-subtitle {
+  color: #ffffff;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 0;
+}
+
+/* Spotlight wrap around buttons — no extra styling, just pass-through */
+.btn-spotlight-wrap {
+  border-radius: 9999px;
+  display: inline-flex;
+}
+
+.cta-btn-wrap {
+  border-radius: 9999px;
+  display: inline-flex;
+}
+
+.btn-outline {
+  font-family: "Karla", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  border: 1px solid var(--fg);
+  border-radius: 9999px;
+  padding: 0.6rem 2rem;
+  background: transparent;
+  color: var(--fg);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s
+    ease;
+}
+
+/* In the hero, force black border + text in light mode for legibility */
+.hero-section .btn-outline {
+  border-color: #000000;
+  color: #000000;
+}
+
+[data-theme="dark"] .hero-section .btn-outline {
+  border-color: #ffffff;
+  color: #ffffff;
+  background: transparent;
+}
+
+.btn-outline:hover {
+  background-color: var(--fg);
+  color: var(--bg);
+}
+
+/* Fix: in dark mode, hover fills white but text must be dark (not white) */
+[data-theme="dark"] .hero-section .btn-outline:hover,
+[data-theme="dark"] .hero-section .btn-outline:focus,
+[data-theme="dark"] .hero-section .btn-outline:active {
+  background-color: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+.hero-meta {
+  font-family: "Karla", sans-serif;
+  font-size: 0.67rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #333333;
+  margin-top: 3.5rem;
+  transition: color 0.25s ease;
+}
+
+[data-theme="dark"] .hero-meta {
+  color: #ffffff;
+}
+
+/* ──────────────────────────────────────────────
+   GALLERY
+────────────────────────────────────────────── */
+.gallery-section {
+  background: #0a0a0a;
+  padding: 72px 0 0;
+  position: relative;
+}
+
+.gallery-header {
+  text-align: center;
+  padding: 0 2rem 48px;
+}
+
+.section-eyebrow {
+  font-family: "Karla", sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.gallery-heading {
+  color: #ffffff !important;
+  margin-bottom: 0 !important;
+}
+
+.gallery-inner {
+  height: 500px;
+  position: relative;
+}
+
+/* ──────────────────────────────────────────────
+   ABOUT / SCROLL REVEAL
+────────────────────────────────────────────── */
+.about-section {
+  padding: 120px 5% 80px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.about-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 3rem;
+}
+
+.about-tag {
+  font-family: "Karla", sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  padding: 0.3rem 0.85rem;
+  background: transparent;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+/* ──────────────────────────────────────────────
+   STEPPER
+────────────────────────────────────────────── */
+.stepper-section {
+  padding: 96px 5% 100px;
+  background: var(--bg-surface);
+  transition: background-color 0.25s ease;
+}
+
+.stepper-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-heading {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  letter-spacing: -0.025em;
+  color: var(--fg);
+  margin: 0.25rem 0 0;
+  transition: color 0.25s ease;
+}
+
+/* ──────────────────────────────────────────────
+   SHOWCASE
+────────────────────────────────────────────── */
+.showcase-section {
+  padding: 96px 5%;
+  background: var(--bg);
+  text-align: center;
+  transition: background-color 0.25s ease;
+}
+
+.showcase-section .section-eyebrow {
+  margin-bottom: 0.4rem;
+}
+
+.showcase-section .section-heading {
+  margin-bottom: 3rem;
+}
+
+.theme-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* SpotlightCard wrapping theme-card */
+.theme-card {
+  background: var(--card-bg);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.25s
+    ease;
+  text-align: left;
+}
+
+[data-theme="dark"] .theme-card {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border);
+}
+
+.theme-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .theme-card:hover {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
+}
+
+.theme-card-visual {
+  height: 160px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.theme-card-ui-hint {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0.35;
+}
+
+.ui-hint-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+  width: 100%;
+}
+
+.ui-hint-bar--short {
+  width: 60%;
+}
+
+.ui-hint-grid {
+  display: flex;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.ui-hint-block {
+  flex: 1;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.theme-card-body {
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.theme-card-tag {
+  font-family: "Karla", sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+
+.theme-card-title {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  margin: 0 0 0.4rem;
+  transition: color 0.25s ease;
+}
+
+.theme-card-desc {
+  font-family: "Karla", sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--fg-muted);
+  margin: 0;
+  transition: color 0.25s ease;
+}
+
+/* ──────────────────────────────────────────────
+   CTA
+────────────────────────────────────────────── */
+.cta-section {
+  padding: 140px 5%;
+  text-align: center;
+  background: var(--bg);
+  transition: background-color 0.25s ease;
+}
+
+.cta-eyebrow {
+  font-family: "Karla", sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+.cta-heading {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--fg);
+  margin: 0 0 1rem;
+  transition: color 0.25s ease;
+}
+
+.cta-sub {
+  font-family: "Karla", sans-serif;
+  font-size: 1rem;
+  color: var(--fg-muted);
+  margin-bottom: 2.5rem;
+  transition: color 0.25s ease;
+}
+
+.btn-primary {
+  font-family: "Karla", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.85rem 2.5rem;
+  background: var(--fg);
+  color: var(--bg);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease, color 0.25s ease;
+}
+
+.btn-primary:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+/* ──────────────────────────────────────────────
+   FOOTER
+────────────────────────────────────────────── */
+.footer {
+  background: #111827;
+  color: #ffffff;
+  padding-top: 2rem;
+  overflow: hidden;
+}
+
+.footer-loop {
+  width: 100%;
+}
+
+.footer-loop .curved-loop-jacket {
+  min-height: unset;
+  height: 180px;
+}
+
+.footer-loop .curved-loop-svg {
+  fill: rgba(255, 255, 255, 0.12);
+  font-size: 4rem;
+}
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2.5rem 1.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.footer-credits {
+  font-family: "Karla", sans-serif;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.footer-caffeine {
+  font-family: "Karla", sans-serif;
+  font-size: 0.75rem;
+  color: #4b5563;
+}
+
+.footer-caffeine a {
+  color: #6b7280;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-caffeine a:hover {
+  color: #9ca3af;
+}
+
+/* ──────────────────────────────────────────────
+   RESPONSIVE
+────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .hero-content {
+    padding: 64px 1.5rem 48px;
+  }
+  .about-section {
+    padding: 80px 1.5rem 60px;
+  }
+  .stepper-section {
+    padding: 64px 1.5rem 80px;
+  }
+  .showcase-section {
+    padding: 64px 1.5rem;
+  }
+  .cta-section {
+    padding: 100px 1.5rem;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .theme-toggle {
+    width: 54px;
+    height: 54px;
+  }
+  .theme-toggle svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   SKETCH MODE — Full-Screen Workspace
+   ══════════════════════════════════════════════ */
+
+/* ── Entry / Exit animation ── */
+.sketch-mode-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  pointer-events: none;
+}
+
+.sketch-mode-visible {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: all;
+}
+
+.sketch-mode-exiting {
+  opacity: 0;
+  transform: scale(0.97);
+  pointer-events: none;
+}
+
+/* ── Top Toolbar ── */
+.sketch-toolbar {
+  height: 48px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  gap: 8px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.sketch-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.sketch-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.sketch-toolbar-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-family: "Karla", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  transition: background 0.15s ease, opacity 0.15s ease;
+}
+
+.sketch-toolbar-btn:hover {
+  background: rgba(128, 128, 128, 0.12);
+}
+
+.sketch-back-btn {
+  gap: 5px;
+  padding: 5px 10px;
+}
+
+.sketch-export-btn {
+  background: #fbff29 !important;
+  color: #111 !important;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.sketch-export-btn:hover {
+  background: #edf000 !important;
+  opacity: 1 !important;
+}
+
+.sketch-project-name {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  background: none;
+  border: none;
+  cursor: text;
+  padding: 4px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.01em;
+  transition: background 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.sketch-project-name:hover {
+  background: rgba(128, 128, 128, 0.1);
+}
+
+.sketch-project-name-input {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 3px 6px;
+  border-radius: 4px;
+  outline: none;
+  max-width: 200px;
+}
+
+/* ── Mode tabs ── */
+.sketch-mode-tabs {
+  display: flex;
+  gap: 2px;
+  background: rgba(128, 128, 128, 0.1);
+  border-radius: 999px;
+  padding: 3px;
+}
+
+.sketch-mode-tab {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 4px 14px;
+  border-radius: 999px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sketch-mode-tab-active {
+  background: #fbff29;
+  color: #111 !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.sketch-mode-tab:not(.sketch-mode-tab-active):hover {
+  background: rgba(128, 128, 128, 0.15);
+}
+
+/* ── Body layout ── */
+.sketch-body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ── Left Tool Panel ── */
+.sketch-left-panel {
+  width: 56px;
+  min-width: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+  gap: 4px;
+  overflow: visible;
+  position: relative;
+  z-index: 10;
+}
+
+.sketch-tool-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.sketch-tool-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  position: relative;
+}
+
+.sketch-tool-btn:hover:not(.sketch-tool-active) {
+  background: rgba(128, 128, 128, 0.12) !important;
+}
+
+.sketch-tool-active {
+  box-shadow: 0 0 0 3px rgba(251, 255, 41, 0.5), 0 0 10px
+    rgba(251, 255, 41, 0.3) !important;
+}
+
+/* Bounce animation on tool select */
+@keyframes toolBounce {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.22);
+  }
+  65% {
+    transform: scale(0.92);
+  }
+  85% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.sketch-tool-bounce {
+  animation: toolBounce 0.38s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+}
+
+/* Tooltip */
+.sketch-tool-tooltip {
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-family: "Karla", sans-serif;
+  font-size: 0.72rem;
+  padding: 4px 8px;
+  border-radius: 5px;
+  border-width: 1px;
+  border-style: solid;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 20;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.sketch-tool-wrapper:hover .sketch-tool-tooltip {
+  opacity: 1;
+}
+
+.sketch-tool-tooltip kbd {
+  font-size: 0.65rem;
+  opacity: 0.6;
+  font-family: "Karla", sans-serif;
+}
+
+/* Shape submenu */
+.sketch-shape-submenu {
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px;
+  border-radius: 8px;
+  z-index: 20;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.sketch-shape-btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s ease;
+}
+
+.sketch-shape-btn:hover {
+  background: rgba(128, 128, 128, 0.15);
+}
+
+.sketch-shape-btn.active {
+  background: rgba(251, 255, 41, 0.15);
+}
+
+.sketch-panel-divider {
+  width: 28px;
+  height: 1px;
+  margin: 4px 0;
+}
+
+.sketch-clear-btn {
+  opacity: 0.5;
+  transition: opacity 0.15s ease;
+}
+
+.sketch-clear-btn:hover {
+  opacity: 1;
+  background: rgba(220, 50, 50, 0.12) !important;
+  color: #e55 !important;
+}
+
+/* ── Canvas Area ── */
+.sketch-canvas-area {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.sketch-canvas-container {
+  width: 100%;
+  height: 100%;
+}
+
+.sketch-zoom-badge {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  font-family: "Karla", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 999px;
+  pointer-events: none;
+  letter-spacing: 0.04em;
+  backdrop-filter: blur(4px);
+}
+
+/* Placeholder views (structure / preview) */
+.sketch-placeholder-view {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.sketch-placeholder-icon {
+  font-size: 2.5rem;
+  opacity: 0.4;
+}
+
+.sketch-placeholder-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.sketch-placeholder-sub {
+  font-family: "Karla", sans-serif;
+  font-size: 0.85rem;
+  max-width: 280px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ── Structure Scan Overlay ── */
+.sketch-scan-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  overflow: hidden;
+}
+
+/* Faint horizontal scan lines in background */
+.sketch-scan-lines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 10px,
+    rgba(251, 255, 41, 0.04) 10px,
+    rgba(251, 255, 41, 0.04) 11px
+  );
+  pointer-events: none;
+}
+
+/* The sweeping bright beam */
+@keyframes scanBeam {
+  0% {
+    top: -4px;
+  }
+  100% {
+    top: calc(100% + 4px);
+  }
+}
+
+.sketch-scan-beam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(251, 255, 41, 0.9) 50%,
+    transparent
+  );
+  box-shadow: 0 0 20px 6px rgba(251, 255, 41, 0.4);
+  animation: scanBeam 1.4s linear infinite;
+}
+
+.sketch-scan-text {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+  position: relative;
+  z-index: 2;
+}
+
+/* Animated dots */
+@keyframes dotBlink {
+  0%,
+  60% {
+    opacity: 0;
+  }
+  80%,
+  100% {
+    opacity: 1;
+  }
+}
+
+.sketch-scan-dots span {
+  animation: dotBlink 1.2s ease-in-out infinite;
+}
+
+.sketch-scan-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.sketch-scan-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* ── Right Properties Panel ── */
+.sketch-right-panel {
+  width: 240px;
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sketch-panel-section {
+  padding: 12px 14px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: transparent;
+}
+
+.sketch-panel-label {
+  font-family: "Karla", sans-serif;
+  font-size: 0.67rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sketch-color-wheel-wrap {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.sketch-color-swatch-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.sketch-color-swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 2px solid rgba(128, 128, 128, 0.25);
+  flex-shrink: 0;
+}
+
+.sketch-hex-input {
+  flex: 1;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-family: "Karla", sans-serif;
+  font-size: 0.8rem;
+  outline: none;
+  text-transform: uppercase;
+}
+
+/* Color ripple effect */
+@keyframes colorRipple {
+  0% {
+    transform: scale(0);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.sketch-color-ripple {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(251, 255, 41, 0.5);
+  transform: scale(0);
+  animation: colorRipple 0.55s ease-out forwards;
+  pointer-events: none;
+  margin-left: -15px;
+  margin-top: -15px;
+}
+
+.sketch-slider {
+  width: 100%;
+  appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(128, 128, 128, 0.25);
+  outline: none;
+  cursor: pointer;
+}
+
+.sketch-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fbff29;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.sketch-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.sketch-shortcuts-section {
+  border-bottom: none !important;
+}
+
+.sketch-shortcuts {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sketch-shortcut-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Karla", sans-serif;
+  font-size: 0.74rem;
+}
+
+.sketch-kbd {
+  font-family: "Karla", sans-serif;
+  font-size: 0.65rem;
+  padding: 1px 5px;
+  border-radius: 3px;
+  border-width: 1px;
+  border-style: solid;
+  white-space: nowrap;
+}
+
+/* ── Floating Color Wheel ── */
+.sketch-floating-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+
+.sketch-floating-wheel {
+  position: fixed;
+  z-index: 51;
+  border-radius: 14px;
+  padding: 12px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  animation: floatWheelIn 0.2s ease-out forwards;
+  transform-origin: center;
+}
+
+@keyframes floatWheelIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.sketch-floating-wheel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.sketch-floating-swatch {
+  width: 100%;
+  height: 20px;
+  border-radius: 5px;
+  margin-top: 10px;
+  border: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+/* ── Clear Confirm Dialog ── */
+.sketch-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.sketch-dialog {
+  border-radius: 12px;
+  padding: 24px;
+  min-width: 280px;
+  max-width: 320px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+  animation: dialogIn 0.18s ease-out;
+}
+
+@keyframes dialogIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.sketch-dialog-title {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+
+.sketch-dialog-body {
+  font-family: "Karla", sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.sketch-dialog-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.sketch-dialog-btn {
+  font-family: "Karla", sans-serif;
+  font-size: 0.83rem;
+  font-weight: 600;
+  padding: 7px 18px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.sketch-dialog-cancel {
+  background: transparent;
+}
+
+.sketch-dialog-cancel:hover {
+  background: rgba(128, 128, 128, 0.1);
+}
+
+.sketch-dialog-confirm {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+}
+
+.sketch-dialog-confirm:hover {
+  background: #dc2626;
+}
+
+/* ── UPLOAD MODE ── */
+.upload-mode-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 280ms ease, transform 280ms ease;
+}
+.upload-mode-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.upload-mode-exiting {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Dropzone */
+.upload-center-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 32px;
+}
+
+.upload-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 520px;
+  min-height: 320px;
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  padding: 48px 32px;
+  transition: border-color 200ms ease, background 200ms ease;
+  text-align: center;
+}
+
+.upload-dropzone.drag-over {
+  border-color: #fbff29;
+  background: rgba(251, 255, 41, 0.04);
+}
+
+[data-theme="dark"] .upload-dropzone {
+  border-color: #555;
+}
+
+[data-theme="dark"] .upload-dropzone.drag-over {
+  border-color: #fbff29;
+  background: rgba(251, 255, 41, 0.04);
+}
+
+.upload-dropzone-icon {
+  opacity: 0.5;
+  margin-bottom: 4px;
+}
+
+.upload-dropzone-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.upload-dropzone-sub {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.upload-browse-btn {
+  padding: 9px 22px;
+  background: #fbff29;
+  color: #111;
+  border: none;
+  border-radius: 6px;
+  font-family: Karla, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.upload-browse-btn:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.upload-dropzone-formats {
+  margin: 0;
+  font-size: 0.75rem;
+  opacity: 0.65;
+  letter-spacing: 0.02em;
+}
+
+/* Image preview */
+.upload-image-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+}
+
+@keyframes uploadImageIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.upload-image-preview {
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain;
+  border-radius: 6px;
+  animation: uploadImageIn 300ms ease-out forwards;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Structure button */
+.upload-structure-btn {
+  width: 100%;
+  padding: 11px 16px;
+  background: #fbff29;
+  color: #111;
+  border: none;
+  border-radius: 8px;
+  font-family: Montserrat, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.upload-structure-btn:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+/* ── HERO BUTTONS PULSE ── */
+@keyframes heroBtnPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.06);
+  }
+  60% {
+    transform: scale(0.97);
+  }
+}
+
+.hero-buttons-pulse .btn-spotlight-wrap {
+  animation: heroBtnPulse 600ms ease-in-out;
+}
+
+/* ── CUSTOM CURSORS ── */
+.btn-sketch {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23111' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z'/%3E%3C/svg%3E")
+    4 20, auto;
+}
+
+.btn-upload {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23111' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/%3E%3Cpolyline points='17 8 12 3 7 8'/%3E%3Cline x1='12' y1='3' x2='12' y2='15'/%3E%3C/svg%3E")
+    12 2, auto;
+}
+
+/* Ensure canvas inherits cursor from container during drawing */
+.sketch-canvas-container canvas {
+  cursor: inherit !important;
+}
